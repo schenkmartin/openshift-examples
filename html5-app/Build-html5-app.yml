@@ -1,0 +1,137 @@
+apiVersion: v1
+items:
+- apiVersion: build.openshift.io/v1
+  kind: Build
+  metadata:
+    annotations:
+      openshift.io/build-config.name: html5-app
+      openshift.io/build.number: "1"
+      openshift.io/build.pod-name: html5-app-1-build
+    creationTimestamp: "2025-02-15T14:59:31Z"
+    generation: 2
+    labels:
+      app: html5-app
+      app.kubernetes.io/component: html5-app
+      app.kubernetes.io/instance: html5-app
+      app.kubernetes.io/name: html5-app
+      app.kubernetes.io/part-of: html5-app
+      app.openshift.io/runtime: httpd
+      app.openshift.io/runtime-version: 2.4-el7
+      buildconfig: html5-app
+      openshift.io/build-config.name: html5-app
+      openshift.io/build.start-policy: Serial
+    name: html5-app-1
+    namespace: myhhtp
+    ownerReferences:
+    - apiVersion: build.openshift.io/v1
+      controller: true
+      kind: BuildConfig
+      name: html5-app
+      uid: cc243d6d-2b63-4326-a5a9-efef888a3702
+    resourceVersion: "206826"
+    uid: 8aa8e54c-3a00-4ecf-85c6-4945d49a6663
+  spec:
+    nodeSelector: null
+    output:
+      pushSecret:
+        name: builder-dockercfg-wt9mg
+      to:
+        kind: ImageStreamTag
+        name: html5-app:latest
+    postCommit: {}
+    resources: {}
+    revision:
+      git:
+        author:
+          email: gs@initcron.org
+          name: Gourav Shah
+        commit: 189c717c8e61f73a7bdac3fa2ea1fcc3aa796f43
+        committer:
+          email: gs@initcron.org
+          name: Gourav Shah
+        message: importing sample code
+      type: Git
+    serviceAccount: builder
+    source:
+      contextDir: /
+      git:
+        uri: https://github.com/schoolofdevops/html-sample-app/
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: DockerImage
+          name: image-registry.openshift-image-registry.svc:5000/openshift/httpd@sha256:ed0fd84ca25caf823958f5860f08545c6a574a1c56e4dcde888499e4c9ffaedc
+        pullSecret:
+          name: builder-dockercfg-wt9mg
+      type: Source
+    triggeredBy:
+    - imageChangeBuild:
+        fromRef:
+          kind: ImageStreamTag
+          name: httpd:2.4-el7
+          namespace: openshift
+        imageID: image-registry.openshift-image-registry.svc:5000/openshift/httpd@sha256:ed0fd84ca25caf823958f5860f08545c6a574a1c56e4dcde888499e4c9ffaedc
+      message: Image change
+  status:
+    completionTimestamp: "2025-02-15T15:01:29Z"
+    conditions:
+    - lastTransitionTime: "2025-02-15T14:59:32Z"
+      lastUpdateTime: "2025-02-15T14:59:32Z"
+      status: "False"
+      type: New
+    - lastTransitionTime: "2025-02-15T14:59:55Z"
+      lastUpdateTime: "2025-02-15T14:59:55Z"
+      status: "False"
+      type: Pending
+    - lastTransitionTime: "2025-02-15T15:01:29Z"
+      lastUpdateTime: "2025-02-15T15:01:29Z"
+      status: "False"
+      type: Running
+    - lastTransitionTime: "2025-02-15T15:01:29Z"
+      lastUpdateTime: "2025-02-15T15:01:29Z"
+      status: "True"
+      type: Complete
+    config:
+      kind: BuildConfig
+      name: html5-app
+      namespace: myhhtp
+    duration: 117000000000
+    output:
+      to:
+        imageDigest: sha256:a375304f2e9e070b0737ae70560342aa8f46a69bc8f0b68e6bbbfca94c1dd2bf
+    outputDockerImageReference: image-registry.openshift-image-registry.svc:5000/myhhtp/html5-app:latest
+    phase: Complete
+    stages:
+    - durationMilliseconds: 824
+      name: FetchInputs
+      startTime: "2025-02-15T14:59:56Z"
+      steps:
+      - durationMilliseconds: 824
+        name: FetchGitSource
+        startTime: "2025-02-15T14:59:56Z"
+    - durationMilliseconds: 56508
+      name: PullImages
+      startTime: "2025-02-15T14:59:59Z"
+      steps:
+      - durationMilliseconds: 56508
+        name: PullBaseImage
+        startTime: "2025-02-15T14:59:59Z"
+    - durationMilliseconds: 28400
+      name: Build
+      startTime: "2025-02-15T15:00:56Z"
+      steps:
+      - durationMilliseconds: 28400
+        name: DockerBuild
+        startTime: "2025-02-15T15:00:56Z"
+    - durationMilliseconds: 1417
+      name: PushImage
+      startTime: "2025-02-15T15:01:25Z"
+      steps:
+      - durationMilliseconds: 1417
+        name: PushImage
+        startTime: "2025-02-15T15:01:25Z"
+    startTimestamp: "2025-02-15T14:59:32Z"
+kind: List
+metadata:
+  resourceVersion: ""

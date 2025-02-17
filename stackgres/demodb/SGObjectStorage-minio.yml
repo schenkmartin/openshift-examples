@@ -1,0 +1,20 @@
+apiVersion: stackgres.io/v1beta1
+kind: SGObjectStorage
+metadata:
+  name: minio
+spec:
+  s3Compatible:
+    awsCredentials:
+      secretKeySelectors:
+        accessKeyId:
+          key: accesskey
+          name: minio
+        secretAccessKey:
+          key: secretkey
+          name: minio
+    bucket: stackgres-pg-backup
+    enablePathStyleAddressing: true
+    endpoint: 'http://192.168.122.1:9000'
+    region: k8s
+  type: s3Compatible
+

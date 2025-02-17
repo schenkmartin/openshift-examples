@@ -1,0 +1,11 @@
+apiVersion: v1
+data:
+  demodb-init-script-app01.sql: |
+    -- init script for demodb database
+    \c demodb demodb
+    create table myinittable(init timestamp);
+    insert into myinittable values (now());
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: demodb-init-script-app01

@@ -1,0 +1,14 @@
+# get bearer token
+ curl -v --insecure --user developer:developer --header "X-CSRF-Token: xxx" --url "https://oauth-openshift.apps-crc.testing/oauth/authorize?response_type=token&client_id=openshift-challenging-client" 2>&1 | grep -oP "access_token=\K[^&]*"
+ 
+# create the project with a ProjectRequest
+./openshift-rest-api.py  https://api.crc.testing:6443/apis/project.openshift.io/v1/projectrequests POST sha256~r231yvQsWWFtXu6OVbqEGTE7YkNvDMsJSWkn-HMd6yE ~/Documents/stackgres/demodb/projectrequest-demodb.yml
+
+# create a secret
+./openshift-rest-api.py  https://api.crc.testing:6443/api/v1/namespaces/demodb/secrets POST sha256~r231yvQsWWFtXu6OVbqEGTE7YkNvDMsJSWkn-HMd6yE ~/Documents/stackgres/demodb/secret-minio-ubuntu24.yml
+
+# create SGObjectStorage
+./openshift-rest-api.py  https://api.crc.testing:6443/apis/stackgres.io/v1beta1/namespaces/demodb/sgobjectstorages POST sha256~gH1Q1p4cnXxsiKl7nvqIvbb8WwWQ0ZlwVxyRMqeGJsA ~/Documents/stackgres/demodb/SGObjectStorage-minio.yml
+
+# create SGCluster
+./openshift-rest-api.py  https://api.crc.testing:6443/apis/stackgres.io/v1/namespaces/demodb/sgclusters POST sha256~gH1Q1p4cnXxsiKl7nvqIvbb8WwWQ0ZlwVxyRMqeGJsA ~/Documents/stackgres/demodb/SGCluster-demodb.yml

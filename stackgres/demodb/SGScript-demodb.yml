@@ -1,0 +1,23 @@
+apiVersion: stackgres.io/v1
+kind: SGScript
+metadata:
+  name: demodb-init-app01
+spec:
+  managedVersions: true
+  continueOnError: false
+  scripts:
+  - name: create-app01-user
+    scriptFrom:
+      secretKeyRef: 
+        name: demodb-create-user-app01
+        key: demodb-create-user-app01.sql
+  - name: create-app01-database
+    script: |
+            CREATE DATABASE app01 WITH OWNER app01;
+  - name: create-app01-schema
+    database: app01
+    scriptFrom:
+      configMapKeyRef:
+        name: demodb-init-script-app01
+        key: demodb-init-script-app01.sql
+

@@ -1,0 +1,14 @@
+Openshift 4.15.17
+
+Stackgres channel stable - 1.14.3
+
+namespace: opernshift-operators
+ 
+ 
+ stackgres limits with no storage size specified
+ 
+ max_wal_size 2GB
+ min_wal_size 1GB
+ archive_timeout 0
+ checkpoint_interval 15m
+ 
