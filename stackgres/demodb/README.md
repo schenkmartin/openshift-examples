@@ -39,7 +39,7 @@ oc login -u developer
 
 ## create new OpenShift project by ProjectRequest
 
-As enduser create a ProjectRequest and switch to the project.
+As end user create a ProjectRequest and switch to the project.
 
 ``` bash
 oc create -f ProjectRequest-demodb.yml
@@ -66,12 +66,36 @@ oc apply -f SGObjectStorage-minio.yml
 
 
 
+## Create database initialization objects
+
+For database initialization a SGScript object is created.
+
+It will be referenced by SGCluster.
+
+YAML files for configmap and secret are created with OC client, since they contain contents of SQL files:
+
+```
+oc create secret generic demodb-create-user-app01 --from-file=demodb-create-user-app01.sql  -o yaml --dry-run=client > Secret-demodb-create-user-app01.yml
+
+oc create configmap demodb-init-script-app01 --from-file=demodb-init-script-app01.sql -o yaml --dry-run=client > ConfigMap-demodb-init-script-app01.yml
+```
+
+Apply the resulting files:
+
+``` 
+oc apply -f Secret-demodb-create-user-app01.yml
+oc apply -f ConfigMap-demodb-init-script-app01.yml
+oc apply -f SGScript-demodb-init-app01.yml
+```
+
+
+
 ## Create SGCluster demodb 
 
 This SGCluster resource has a backup location configured, but no schedule. This means that this database cluster will archive WAL files to S3 but does not create database backups on schedule.
 
 ``` bash
-oc apply -f SGCluster-demodb.yml
+oc apply -f SGCluster-demodb-with-init-scripts.yml
 ```
 
 
@@ -84,9 +108,7 @@ A single manual backup can be started by creating a SGBackup resource:
 oc apply -f SGBackup-demodb-manualbackup01.yml
 ```
 
-TODO: How to check the backup status? Running, Finished - w or w/o errors - wal-g output or backup pod output? 
-
-Each database backup creates a SGBackup resource. Manual backups will not be managed by the configured retention. TODO - check this!
+Each database backup creates a SGBackup resource. Manual backups will not be managed by the configured retention. 
 
 ```
 NAME                         CLUSTER   MANAGED   STATUS
@@ -111,25 +133,20 @@ oc get SGCluster demodb -o yaml | yq -r ".spec.configurations.backups"
   sgObjectStorage: minio
 ```
 
-The Schedule will create a new database backup every 5 minutes and keep 8 most current backups.
+The Schedule will create a new database backup every 5 minutes and keep 8 most current backups - see ` oc get SGBackup` 
+
+Manual backups will stay in place.
 
 ``` 
 NAME                         CLUSTER   MANAGED   STATUS
-demodb-2025-02-15-16-10-02   demodb    true      Completed
+demodb-2025-02-19-12-30-02   demodb    true      Completed
+demodb-2025-02-19-12-35-01   demodb    true      Completed
+demodb-2025-02-19-12-40-02   demodb    true      Completed
+demodb-2025-02-19-12-45-04   demodb    true      Completed
+demodb-2025-02-19-12-50-02   demodb    true      Completed
+demodb-2025-02-19-12-55-03   demodb    true      Completed
+demodb-2025-02-19-13-00-03   demodb    true      Completed
+demodb-2025-02-19-13-05-05   demodb    true      Completed
 demodb-manualbackup01        demodb    false     Completed
 ```
 
-
-
-## Customize PostgreSQL 
-
-To customize the PostgreSQL server at initialization provide a SGScript resource for SGCLuster as `spec.managedSql.scripts` .
-
-
-
-``` 
-oc apply -f Secret-demodb-create-user-app01.yml 
-oc apply -f ConfigMap-demodb-init-script-app01.yml
-oc apply -f SGScript-demodb.yml 
-oc apply -f SGCluster-demodb-with-init.yml
-```
