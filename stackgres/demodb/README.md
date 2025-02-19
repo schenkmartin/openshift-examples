@@ -1,12 +1,12 @@
 # oc-demodb: Use oc and YML files to create a Stackgres PostgreSQL cluster with backup
-Tested with Openshift 4.15, Stackgres 1.13.
+Tested with Openshift 4.15 (crc), Stackgres 1.13. CRC was started with additional resources to run the tests:`crc start -m 24000 -d 256 -c ` 
 
 Deploy a minimal PostgreSQL cluster with 2 replicas.
 
 Further customize the deployment by creating initial users and databases.
 
-S3 storage is emulated by a single node Minio docker container. Sadly this deployment of Minio
-does not provide the adminstrative REST api. User and access key creation is manual:
+S3 storage is emulated by a single node Minio docker container. The single node deployment of Minio
+does not provide the adminstrative REST api. User and access key creation is manual.
 
 
 
