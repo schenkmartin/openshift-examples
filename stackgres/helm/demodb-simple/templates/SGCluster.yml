@@ -1,0 +1,22 @@
+apiVersion: stackgres.io/v1
+kind: SGCluster
+metadata:
+  name: {{ .Release.Name }}-demodb
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "0"
+spec:
+  configurations:
+    backups:
+      - sgObjectStorage: {{ .Release.Name }}-minio
+  managedSql:
+    scripts:
+      - sgScript: {{ .Release.Name }}-sgscript-initialization
+  pods:
+    persistentVolume:
+      size: {{ .Values.sgcluster.disksizegb }}Gi
+  postgres:
+    version: {{ .Values.sgcluster.version }}
+  instances: 2
+  profile: {{ .Values.sgcluster.profile }}
+

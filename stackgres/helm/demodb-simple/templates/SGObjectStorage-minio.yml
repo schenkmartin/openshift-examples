@@ -1,0 +1,23 @@
+apiVersion: stackgres.io/v1beta1
+kind: SGObjectStorage
+metadata:
+  name: {{ .Release.Name }}-minio
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-3"
+spec:
+  s3Compatible:
+    awsCredentials:
+      secretKeySelectors:
+        accessKeyId:
+          key: accesskey
+          name: {{ .Release.Name }}-minio
+        secretAccessKey:
+          key: secretkey
+          name: {{ .Release.Name }}-minio
+    bucket: {{ .Values.minio.bucket }}
+    enablePathStyleAddressing: true
+    endpoint: {{ .Values.minio.url }}
+    region: k8s
+  type: s3Compatible
+

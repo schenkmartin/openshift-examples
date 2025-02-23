@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: demodb-simple
+description: My Openshift charts
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+icon: "http://192.168.122.1/helm/openshift-charts/Postgresql_elephant.png"
