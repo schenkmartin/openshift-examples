@@ -8,5 +8,10 @@ sgcluster:
   version: 16
   profile: development
   disksizegb: 20
-
+init:
+  username: "app01"
+  password: "secret"
+  userobjects:
+    database: "mydb"
+    initsql: "CREATE TABLE mytable01 (init timestamp);"
 

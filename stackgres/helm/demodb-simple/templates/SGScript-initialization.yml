@@ -1,3 +1,4 @@
+{{- if ((.Values.init).username) }}
 apiVersion: stackgres.io/v1
 kind: SGScript
 metadata:
@@ -14,14 +15,18 @@ spec:
       secretKeyRef: 
         name: {{ .Release.Name }}-secret-user-initalization
         key: create-user
+  {{- if (((.Values.init).userobjects).database) }}
   - name: create-database
     script: |
             CREATE DATABASE {{ .Values.init.database }} 
             WITH OWNER {{ .Values.init.username }};
+  {{- if (((.Values.init).userobjects).initsql) }}
   - name: initsql
-    database: {{ .Values.init.database }}
+    database: {{ .Values.init.userobjects.database }}
     scriptFrom:
       configMapKeyRef:
         name: {{ .Release.Name }}-configmap-initsql
         key: initsql
-
+  {{- end }}
+  {{- end }}
+{{- end }}

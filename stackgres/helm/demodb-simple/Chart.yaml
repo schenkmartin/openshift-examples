@@ -5,4 +5,4 @@ description: A simple Stackgres PostgreSQL cluster
 type: application
 version: 0.1.0
 appVersion: "0.1.0"
-icon: "http://192.168.122.1/helm/openshift-charts/Postgresql_elephant.png"
+# icon: "http://192.168.122.1/helm/openshift-charts/postgresql.png"

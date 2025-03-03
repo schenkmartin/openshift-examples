@@ -1,142 +1,154 @@
 {
-    "$schema": "http://json-schema.org/draft-07/schema",
-    "$id": "http://example.com/helm/schema/pg-cluster.schema.json",
-    "type": "object",
-    "required": [
-      "minio",
-      "sgcluster"
-    ],
-    "properties": {
-     
-      "minio": {
-        "$id": "#/properties/minio",
-        "type": "object",
-        "required": [
-              "url",
-              "bucket",
-              "accesskey",
-              "secretkey"
-             ],
-        "properties": {
-              "url": {
-                "$id": "#/properties/minio/url",
-                "type": "string",
-                "title": "URL",
-                "description": "URL of the minio S3 server",
-                "default": "http://192.168.122.1:9000",
-                "form": true
-              },
-              "bucket": {
-                "$id": "#/properties/minio/bucket",
-                "type": "string",
-                "title": "Bucket",
-                "description": "Bucket name on S3",
-                "form": true,
-                "default": "*"
-              },
-              "accesskey": {
-                "$id": "#/properties/minio/accesskey",
-                "type": "string",
-                "title": "Access key",
-                "description": "Access key for S3",
-                "form": true
-              },
-              "secretkey": {
-                "$id": "#/properties/minio/secretkey",
-                "type": "string",
-                "title": "Secret key",
-                "description": "Secret key for S3",
-                "form": true
-              }
-            }
-        },    
-      "sgcluster": {
-        "$id": "#/properties/sgcluster",
-        "type": "object",
-        "title": "Main postgres (sgcluster) configuration",
-        "description": "Main configuration possibilities for your sgcluster",
-        "required": [
-          "version",
-          "profile",
-          "disksizegb"
-        ],
-        "properties": {
-          "version": {
-            "$id": "#/properties/sgcluster/version",
-            "type": "integer",
-            "title": "Postgres Version",
-            "description": "Version of Postgres Cluster to deploy, tested and verified is version 16",
-            "enum": [16,15,14,13,12],
-            "default": 16,
-            "form": true
-          },
-          "profile": {
-            "$id": "#/properties/sgcluster/profile",
-            "type": "string",
-            "title": "Resource profile to be used",
-            "description": "You may choose between production, testing and development",
-            "properties": {
-              "type": {
-                "type": "string",
-                "title": "Database profile",
-                "enum": ["production", "testing", "development"]
-              }
-             
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "http://example.com/helm/schema/pg-cluster.schema.json",
+  "type": "object",
+  "required": [
+    "minio",
+    "sgcluster"
+  ],
+  "properties": {
+   
+    "minio": {
+      "$id": "#/properties/minio",
+      "type": "object",
+      "required": [
+            "url",
+            "bucket",
+            "accesskey",
+            "secretkey"
+           ],
+      "title": "Mino S3 connection information",
+      "description": "Used for WAL and database backups",
+      "properties": {
+            "url": {
+              "$id": "#/properties/minio/url",
+              "type": "string",
+              "title": "URL",
+              "description": "URL of the minio S3 server",
+              "default": "http://192.168.122.1:9000",
+              "form": true
             },
-            "required": ["type"],
-            "additionalProperties": false
-          },
-          "disksizegb": {
-            "$id": "#/properties/sgcluster/disksizegb",
-            "type": "integer",
-            "title": "Disk size in GB",
-            "description": "Amount of disk size in GB for each cluster-instance.",
-            "default": 2,
-            "minimum": 1,
-            "form": true
-          }
-        }
-      },
-      "init": {
-        "$id": "#/properties/init",
-        "type": "object",
-        "required": [
-              "username",
-              "password",
-              "database",
-              "initsql"
-             ],
-        "properties": {
-              "username": {
-                "$id": "#/properties/init/username",
-                "type": "string",
-                "title": "Username",
-                "description": "Username",
-                "default": "app01",
-                "form": true
-              },
-              "password": {
-                "$id": "#/properties/init/password",
-                "type": "string",
-                "title": "Password",
-                "description": "Password",
-                "form": true
-              },
-              "database": {
-                "$id": "#/properties/init/database",
-                "type": "string",
-                "title": "Database name",
-                "description": "Database to create",
-                "form": true
-              },
-              "initsql": {
-                "$id": "#/properties/init/initsql",
-                "type": "string",
-                "title": "SQL to execute in database",
-                "description": "SQL to execute in database",
-                "form": true
-              }
+            "bucket": {
+              "$id": "#/properties/minio/bucket",
+              "type": "string",
+              "title": "Bucket",
+              "description": "Bucket name on S3",
+              "form": true,
+              "default": "*"
+            },
+            "accesskey": {
+              "$id": "#/properties/minio/accesskey",
+              "type": "string",
+              "title": "Access key",
+              "description": "Access key for S3",
+              "form": true
+            },
+            "secretkey": {
+              "$id": "#/properties/minio/secretkey",
+              "type": "string",
+              "title": "Secret key",
+              "description": "Secret key for S3",
+              "form": true
             }
+          }
+      },    
+    "sgcluster": {
+      "$id": "#/properties/sgcluster",
+      "type": "object",
+      "title": "Main postgres (sgcluster) configuration",
+      "description": "Main configuration possibilities for your sgcluster",
+      "required": [
+        "version",
+        "profile",
+        "disksizegb"
+      ],
+      "properties": {
+        "version": {
+          "$id": "#/properties/sgcluster/version",
+          "type": "integer",
+          "title": "Postgres Version",
+          "description": "Version of Postgres Cluster to deploy, tested and verified is version 16",
+          "enum": [16,15,14,13,12],
+          "default": 16,
+          "form": true
+        },
+        "profile": {
+          "$id": "#/properties/sgcluster/profile",
+          "type": "string",
+          "title": "Resource profile to be used",
+          "description": "You may choose between production, testing and development",
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Database profile",
+              "enum": ["production", "testing", "development"]
+            }
+           
+          },
+          "required": ["type"],
+          "additionalProperties": false
+        },
+        "disksizegb": {
+          "$id": "#/properties/sgcluster/disksizegb",
+          "type": "integer",
+          "title": "Disk size in GB",
+          "description": "Amount of disk size in GB for each cluster-instance.",
+          "default": 2,
+          "minimum": 1,
+          "form": true
+        }
       }
+    },
+    "init": {
+      "$id": "#/properties/init",
+      "type": "object",
+      "required": [
+            "username",
+            "password"
+           ],
+      "title": "Custom database initialization",
+      "description": "Specify custom objects to be created at database initialization",
+      "properties": {
+            "username": {
+              "$id": "#/properties/init/username",
+              "type": "string",
+              "title": "Username",
+              "description": "User to create.",
+              "form": true
+            },
+            "password": {
+              "$id": "#/properties/init/password",
+              "type": "string",
+              "title": "Password",
+              "description": "Password for the user.",
+              "form": true
+            },
+            "userobjects": {
+                "$id": "#/properties/init/userobjects",
+                "type": "object",
+                "title": "User objects",
+                "description": "Create an empty database owned by the user, optionally execute initialization SQL statements.",
+                "required": [
+                  "database"
+                ],
+                "properties": {
+                      "database": {
+                        "$id": "#/properties/init/database",
+                        "type": "string",
+                        "title": "Database",
+                        "description": "Database to create",
+                        "form": true
+                      },
+                      "initsql": {
+                        "$id": "#/properties/init/initsql",
+                        "type": "string",
+                        "title": "SQL text",
+                        "description": "SQL to execute in database",
+                        "form": true
+                      }
+                } 
+          }  
+        }
     }
+  }
 }

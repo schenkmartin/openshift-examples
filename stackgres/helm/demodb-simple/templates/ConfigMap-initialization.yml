@@ -1,3 +1,6 @@
+{{- if ((.Values.init).username) }}
+{{- if (((.Values.init).userobjects).database) }}
+{{- if (((.Values.init).userobjects).initsql) }}
 apiVersion: v1
 data:
   initsql: {{ .Values.init.initsql }}
@@ -7,3 +10,6 @@ metadata:
   annotations:
     "helm.sh/hook": "pre-install"
     "helm.sh/hook-weight": "-5"
+{{- end }}
+{{- end }}
+{{- end }}

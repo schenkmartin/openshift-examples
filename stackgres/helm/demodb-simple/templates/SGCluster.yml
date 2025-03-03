@@ -9,9 +9,11 @@ spec:
   configurations:
     backups:
       - sgObjectStorage: {{ .Release.Name }}-minio
+  {{- if ((.Values.init).username) }}
   managedSql:
     scripts:
       - sgScript: {{ .Release.Name }}-sgscript-initialization
+  {{- end }}
   pods:
     persistentVolume:
       size: {{ .Values.sgcluster.disksizegb }}Gi
