@@ -13,7 +13,7 @@ There are some support files in the base folder:
 ## stackgres
 Stackgres operates PostgreSQL databases in your Openshift Cluster.
 
-Some examples how to build a PostgreSQL cluster using HELM charts can be found here.
+Explore examples how to build a PostgreSQL cluster using custom resource files and HELM charts.
 
 Some background on HELM and Openshift UI is also available.
 
