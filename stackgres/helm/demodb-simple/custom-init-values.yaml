@@ -11,7 +11,5 @@ sgcluster:
 init:
   username: "app01"
   password: "secret"
-  userobjects:
-    database: "mydb"
-    initsql: "CREATE TABLE mytable01 (init timestamp);"
+  database: "mydb"
 

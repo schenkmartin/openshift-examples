@@ -104,10 +104,11 @@
       "type": "object",
       "required": [
             "username",
-            "password"
+            "password",
+            "database"
            ],
-      "title": "Custom database initialization",
-      "description": "Specify custom objects to be created at database initialization",
+      "title": "Create user and database (optional)",
+      "description": "Create a user and database owned by it on database initialization.",
       "properties": {
             "username": {
               "$id": "#/properties/init/username",
@@ -123,31 +124,13 @@
               "description": "Password for the user.",
               "form": true
             },
-            "userobjects": {
-                "$id": "#/properties/init/userobjects",
-                "type": "object",
-                "title": "User objects",
-                "description": "Create an empty database owned by the user, optionally execute initialization SQL statements.",
-                "required": [
-                  "database"
-                ],
-                "properties": {
-                      "database": {
-                        "$id": "#/properties/init/database",
-                        "type": "string",
-                        "title": "Database",
-                        "description": "Database to create",
-                        "form": true
-                      },
-                      "initsql": {
-                        "$id": "#/properties/init/initsql",
-                        "type": "string",
-                        "title": "SQL text",
-                        "description": "SQL to execute in database",
-                        "form": true
-                      }
-                } 
-          }  
+            "database": {
+              "$id": "#/properties/init/database",
+              "type": "string",
+              "title": "Database",
+              "description": "Database to create - owned by the created user.",
+              "form": true
+            }
         }
     }
   }

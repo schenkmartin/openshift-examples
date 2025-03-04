@@ -5,7 +5,7 @@ It allows to configure 3 different things:
 
 * minio S3 connection details - for WAL and database backups
 * Main PostgreSQL configuration - Version, profile and database cluster size
-* Custom database initialization - Create an user, a new database belonging to the user and execute SQL inside this database (single command for now)
+* Custom database initialization - Create an userand a new database belonging to the user.
 
 Other values are default.
 
@@ -16,7 +16,6 @@ Other values are default.
 A complete ` values.yaml`  for using all options looks like:
 
 ```
----
 minio:
   url: http://192.168.122.1:9000
   bucket: stackgres-pg-backup
@@ -29,17 +28,5 @@ sgcluster:
 init:
   username: "app01"
   password: "secret"
-  userobjects:
-    database: "mydb"
-    initsql: "CREATE TABLE mytable01 (init timestamp);"
+  database: "mydb"
 ```
-
-
-
-# TODO
-
-## custom init
-
-* Password must not be displayed in clear text
-* Allow multiline text input or usage of a configmap containing the key: initsql ?
-
