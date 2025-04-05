@@ -1,0 +1,16 @@
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    k8s-app: stackgres-metrics
+  name: stackgres-metrics
+  namespace: admindb
+spec:
+  endpoints:
+  - interval: 15s
+    port: pgexporter
+    scheme: http
+  selector:
+    matchLabels:
+      app: StackGresCluster
