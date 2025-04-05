@@ -1,0 +1,205 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "http://example.com/helm/schema/pg-cluster.schema.json",
+    "type": "object",
+    "required": [
+      "minio",
+      "sgcluster"
+    ],
+    "properties": {
+     
+      "minio": {
+        "$id": "#/properties/minio",
+        "type": "object",
+        "required": [
+              "url",
+              "bucket",
+              "accesskey",
+              "secretkey"
+             ],
+        "title": "Mino S3 connection information",
+        "description": "Used for WAL and database backups",
+        "properties": {
+              "url": {
+                "$id": "#/properties/minio/url",
+                "type": "string",
+                "title": "URL",
+                "description": "URL of the minio S3 server",
+                "default": "http://192.168.122.1:9000",
+                "form": true
+              },
+              "bucket": {
+                "$id": "#/properties/minio/bucket",
+                "type": "string",
+                "title": "Bucket",
+                "description": "Bucket name on S3",
+                "form": true,
+                "default": "*"
+              },
+              "accesskey": {
+                "$id": "#/properties/minio/accesskey",
+                "type": "string",
+                "title": "Access key",
+                "description": "Access key for S3",
+                "form": true
+              },
+              "secretkey": {
+                "$id": "#/properties/minio/secretkey",
+                "type": "string",
+                "title": "Secret key",
+                "description": "Secret key for S3",
+                "form": true
+              }
+            }
+        },    
+      "sgcluster": {
+        "$id": "#/properties/sgcluster",
+        "type": "object",
+        "title": "Main postgres (sgcluster) configuration",
+        "description": "Main configuration possibilities for your sgcluster",
+        "required": [
+          "version",
+          "profile",
+          "disksizegb"
+        ],
+        "properties": {
+          "version": {
+            "$id": "#/properties/sgcluster/version",
+            "type": "integer",
+            "title": "Postgres Version",
+            "description": "Version of Postgres Cluster to deploy, tested and verified is version 16",
+            "enum": [16,15,14,13,12],
+            "default": 16,
+            "form": true
+          },
+          "profile": {
+            "$id": "#/properties/sgcluster/profile",
+            "type": "string",
+            "title": "Resource profile to be used",
+            "description": "You may choose between production, testing and development",
+            "properties": {
+              "type": {
+                "type": "string",
+                "title": "Database profile",
+                "enum": ["production", "testing", "development"]
+              }
+             
+            },
+            "required": ["type"],
+            "additionalProperties": false
+          },
+          "disksizegb": {
+            "$id": "#/properties/sgcluster/disksizegb",
+            "type": "integer",
+            "title": "Disk size in GB",
+            "description": "Amount of disk size in GB for each cluster-instance.",
+            "default": 2,
+            "minimum": 1,
+            "form": true
+          }
+        }
+      },
+      "init": {
+        "$id": "#/properties/init",
+        "type": "object",
+        "required": [
+              "username",
+              "password",
+              "database"
+             ],
+        "title": "Custom database initialization",
+        "description": "Specify custom objects to be created at database initialization",
+        "properties": {
+              "username": {
+                "$id": "#/properties/init/username",
+                "type": "string",
+                "title": "Username",
+                "description": "Username",
+                "form": true
+              },
+              "password": {
+                "$id": "#/properties/init/password",
+                "type": "string",
+                "title": "Password",
+                "description": "Password",
+                "form": true
+              },
+              "database": {
+                "$id": "#/properties/init/database",
+                "type": "string",
+                "title": "Database name",
+                "description": "Database to create",
+                "form": true
+              }
+            }
+      },
+      "backupschedule": {
+        "$id": "#/properties/backupschedule",
+        "type": "object",
+        "required": [
+              "backupretentioncount",
+              "backupdayofweek",
+              "backuphour",
+              "backupminute"
+             ],
+        "title": "Backup schedule",
+        "description": "Schedule for full backup",
+        "properties": {
+          "backupretentiondays": {
+            "$id": "#/properties/backupschedule/backupretentioncount",
+            "type": "integer",
+            "title": "Backup retention",
+            "description": "Numer of schedulede backups to be kept.",
+            "pattern": "^([0-9]?[0-9])$",
+            "default": 8
+            ,
+            "form": true
+          },
+          "backupdayofweek": {
+            "$id": "#/properties/backupschedule/backupdayofweek",
+            "type": "string",
+            "title": "Backup day of week (UTC time)",
+            "description": "Backup day of week 0..Sunday, 6..Saturday",
+            "pattern": "^([0-6]|\\*)$",
+            "form": true,
+            "default": "*"
+          },
+          "backuphour": {
+            "$id": "#/properties/backupschedule/backuphour",
+            "type": "string",
+            "title": "Backup hour of the day (UTC time)",
+            "description": "Hour of backup start (0-23)",
+            "pattern": "^(?:[0-9]|1[0-9]|2[0-3]|\\*)$",
+            "form": true,
+            "default": "*"
+          },
+          "backupminute": {
+            "$id": "#/properties/backupschedule/backupminute",
+            "type": "string",
+            "title": "Backup minute (UTC time)",
+            "description": "Minute of the backup start (0-59)",
+            "pattern": "^(?:[0-9]|[1-5][0-9]|\\*/[0-9]|\\*/[1-5][0-9])$",
+            "form": true
+          }
+        }
+      },
+      "prometheus" : {
+        "$id": "#/properties/prometheus",
+        "type": "object",
+        "title": "Prometheus",
+        "description": "Export prometheus metrics for this Postgresql Server.",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "$id": "#/properties/enabled",
+            "type": "boolean",
+            "title": "Enable Prometheus metrics exporter.",
+            "default": false,
+            "form": true
+          }
+        }
+      }
+    }
+}

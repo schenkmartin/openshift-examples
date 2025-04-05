@@ -1,0 +1,22 @@
+{{- if ((.Values.init).username) }}
+apiVersion: stackgres.io/v1
+kind: SGScript
+metadata:
+  name: {{ .Release.Name }}-sgscript-initialization
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "-3"
+spec:
+  managedVersions: true
+  continueOnError: false
+  scripts:
+  - name: create-user
+    scriptFrom:
+      secretKeyRef: 
+        name: {{ .Release.Name }}-secret-user-initalization
+        key: create-user
+  - name: create-database
+    script: |
+            CREATE DATABASE {{ .Values.init.database }} 
+            WITH OWNER {{ .Values.init.username }};
+{{- end }}

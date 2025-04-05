@@ -1,0 +1,8 @@
+---
+apiVersion: v2
+name: demodb-medium
+description: A medium Stackgres PostgreSQL cluster
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+icon: "https://www.postgresql.org/media/img/about/press/elephant64.png"

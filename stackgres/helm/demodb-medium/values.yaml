@@ -1,0 +1,16 @@
+minio:
+  url: http://192.168.122.1:9000
+  bucket: stackgres-pg-backup
+  accesskey: Rmej79BX1p44nexPTjpN
+  secretkey: gfmR2O4MhyHIZC5xZ81dbgERPO3uuGzxjBeOmpMV
+sgcluster:
+  version: 16
+  profile: development
+  disksizegb: 20
+backupschedule:
+  backupretentioncount: 7
+  backupdayofweek: "*"
+  backuphour: "*"
+  backupminute: "*/15"
+prometheus:
+  enabled: true

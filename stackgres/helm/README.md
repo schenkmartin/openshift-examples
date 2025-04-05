@@ -4,11 +4,12 @@ Here you will find:
 
 * HELM charts that create PostgreSQL clusters based on Stackgres
 * How a HELM chart repository works
-* Using s custom HELM chart repository with Openshift
+* Using custom HELM chart repository with Openshift
 
 ## HELM charts
 
-* [demodb-simple](https://github.com/schenkmartin/openshift-examples/tree/main/stackgres/helm/demodb-simple): a minimalistic approach
+* [demodb-simple](https://github.com/schenkmartin/openshift-examples/tree/main/stackgres/helm/demodb-simple): a minimal approach, with few options
+* demodb-medium: allows for some customization
 
 ## HELM repository
 
@@ -57,6 +58,28 @@ It is part of [infra](https://github.com/schenkmartin/openshift-examples/tree/ma
 
 
 
+## Permissions required in OpenShift
+
+Some resources that are created by the HELM chart require special user permissions, like creating PrometheusRules.
+
+These are created by applying the follwing configs. They will grant the user "developer" with appropriate permissions.
+
+* ClusterRole-prometheus-rule-manager.yml
+* ClusterRoleBinding-prometheus-rule-manager.yml
+
+The Openshift cluster must be able to read service endpoints from user projects to create PodMonitor resources.  TODO this is not peristent for new projects! ClusterRole needs to be applied (configured) when a new project is created.
+
+* ClusterRole-prometheus-k8s.yml
+* ClusterRoleBinding-prometheus-k8s-global.yml
+
+
+
+## HELM charts in Openshift UI
+
+Beside using the standard `helm` command to deploy a HELM chart to an Openshift cluster, the UI allows for classic user input of values and apply them to the HELM chart. 
+
+
+
 ## Setup a custom HELM repository for Openshift
 
 We want the charts to be available in the Openshift Console, so we need to setup an additional HELM chart repository in the cluster.
@@ -75,3 +98,12 @@ openshift-helm-charts   251d
 
 By default, the repository will be available cluster wide in the Developer Catalog.
 
+
+
+### TODO: How HELM charts are displayed in the Openshift UI
+
+values.schema.json - default values are not set here, they would overwrite empty (and full?) values prvided by values.yaml
+
+defaults from values.yaml - these values are display by default
+
+README.md is displayed when creating a HELM release.
