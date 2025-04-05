@@ -1,0 +1,110 @@
+---
+name: cicd
+
+services:
+  #traefik:
+  #  image: traefik:v2.10
+  #  restart: unless-stopped
+  #  command:
+  #    - "--api.insecure=true"
+  #    - "--providers.docker=true"
+  #    - "--entrypoints.web.address=:80"
+  #  ports:
+  #    - "80:80"
+  #    - "8080:8080"
+  #  volumes:
+  #    - /var/run/docker.sock:/var/run/docker.sock:ro
+
+#  jenkins:
+#    image: jenkins/jenkins:2.502-jdk17
+#    restart: unless-stopped
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.jenkins.rule=Host(`jenkins.localhost`)"
+#      - "traefik.http.services.jenkins.loadbalancer.server.port=8080"
+#    volumes:
+#      - jenkins_home:/var/jenkins_home
+#
+#  gitea:
+#    image: gitea/gitea:1.23
+#    restart: unless-stopped
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.gitea.rule=Host(`gitea.localhost`)"
+#      - "traefik.http.services.gitea.loadbalancer.server.port=3000"
+#    volumes:
+#      - gitea-data:/var/lib/gitea
+#      - gitea-config:/etc/gitea
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
+
+#  nexus:
+#    image: sonatype/nexus3:3.78.2-ubi
+#    restart: unless-stopped
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.nexus.rule=Host(`nexus.localhost`)"
+#      - "traefik.http.services.nexus.loadbalancer.server.port=8081"
+#    volumes:
+#      - nexus-data:/nexus-data
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8081"]
+#      interval: 30s
+#      timeout: 10s
+#      retries: 5
+#      start_period: 60s
+
+  gitlab:
+    image: gitlab/gitlab-ce:17.10.1-ce.0
+    # container_name: gitlab
+    restart: unless-stopped
+    environment:
+      GITLAB_OMNIBUS_CONFIG: |
+        gitlab_rails['gitlab_shell_ssh_port'] = 2424
+    ports:
+      - '8880:80'
+      - '8443:443'
+      - '822:22'
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.gitlab.rule=Host(`gitlab.localhost`)"
+      - "traefik.http.services.gitlab.loadbalancer.server.port=80"
+    volumes:
+      - gitlab-config:/etc/gitlab
+      - gitlab-logs:/var/log/gitlab
+      - gitlab-data:/var/opt/gitlab
+    shm_size: '256m'
+ 
+  nodered:
+    image: nodered/node-red:3.1.15-18
+    restart: unless-stopped
+    ports:
+      - 1880:1880
+    volumes:
+      - nodered_data:/data
+  
+  gitlab-runner:
+    image:  gitlab/gitlab-runner:ubuntu-c28ac304
+    container_name: gitlab-runner
+    restart: unless-stopped
+    volumes:
+      - gitlab_runner_config:/etc/gitlab-runner
+      - /var/run/docker.sock:/var/run/docker.sock
+    
+volumes:
+  jenkins_home:
+  gitea-data:
+  gitea-config:
+  nexus-data:
+  gitlab-config:
+  gitlab-data:
+  gitlab-logs:
+  nodered_data:
+  gitlab_runner_config:
+
+
+# metabase
+# github
+# gitlab -  gitlab/gitlab-ce:17.9.2-ce.0
+
+
